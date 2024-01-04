@@ -56,7 +56,6 @@ defmodule GuedesBank.MixProject do
       {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
       {:sobelow, "~> 0.8", only: :dev}
-
     ]
   end
 
