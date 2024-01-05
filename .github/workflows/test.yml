@@ -1,9 +1,26 @@
-name: Verify Test
+name: Verify Tests
 
 on: pull_request
 
 jobs:
+
   coverall:
+
+    continue-on-error: false
+
+    services:
+      pg:
+        image: postgres:13
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,16 +44,27 @@ jobs:
           mix local.hex --force
           mix deps.get
           mix ecto.create
-      - name: ===> Verify Coverage and tests
+      - name: Wait for DB
+        run: |
+          while ! pg_isready -q -h $POSTGRES_HOST -p 5432; do
+            sleep 1
+          done
+      - name: Run Tests
+        run: mix test
+        id: tests
+
+      - name: Check Tests
+        if: steps.tests.outcome != 'success'
+        run: |
+          echo "Failed due to broken tests"
+          exit 1
+
+      - name: Generate Coverage
         run: mix coveralls.html
-    services:
-      pg:
-        image: postgres:13
-        ports: ["5432:5432"]
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+        id: coverage
+
+      - name: Check Coverage
+        if: steps.coverage.outcome != 'success' || steps.coverage.outputs.coverage < 90
+        run: |
+          echo "Failed due to low coverage - ${{ steps.coverage.outputs.coverage }}%"
+          exit 1
