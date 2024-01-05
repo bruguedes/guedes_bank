@@ -53,7 +53,7 @@ defmodule GuedesBank.MixProject do
       {:ex_machina, "~> 2.7.0", only: :test},
       {:tesla, "~> 1.8.0"},
       {:credo, "~> 1.6.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4.3", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
       {:sobelow, "~> 0.8", only: :dev}
     ]
