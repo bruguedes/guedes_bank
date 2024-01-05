@@ -22,7 +22,7 @@ defmodule GuedesBankWeb.UsersControllerTest do
     test "successfully creates an user when data is valid", ctx do
       assert %{
                "data" => %{
-                 "cep" => "69905080",
+                 "cep" => "banana",
                  "email" => "bruno@guedes.com",
                  "id" => _,
                  "name" => "Bruno Guedes"
