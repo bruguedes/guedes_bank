@@ -1,4 +1,6 @@
 defmodule GuedesBank.Users.Inputs.CreateUser do
+  @moduledoc "Create User input"
+
   use Ecto.Schema
   import Ecto.Changeset
 

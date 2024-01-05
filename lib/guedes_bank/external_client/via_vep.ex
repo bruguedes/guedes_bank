@@ -1,4 +1,6 @@
 defmodule GuedesBank.ExternalClient.ViaVep do
+  @moduledoc "ViaCep client"
+
   use Tesla
 
   plug Tesla.Middleware.BaseUrl, "https://viacep.com.br/ws/"

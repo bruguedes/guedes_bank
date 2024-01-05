@@ -1,5 +1,5 @@
 defmodule GuedesBankWeb.Telemetry do
-  @doc false
+  @moduledoc false
 
   use Supervisor
   import Telemetry.Metrics
