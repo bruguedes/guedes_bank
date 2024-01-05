@@ -1,4 +1,6 @@
 defmodule GuedesBankWeb.UsersJSON do
+  @moduledoc "Users JSON"
+
   alias GuedesBank.Users.Schema.User
 
   def user_create(%{user: user}), do: %{data: data(user)}

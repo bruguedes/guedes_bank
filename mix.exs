@@ -9,7 +9,14 @@ defmodule GuedesBank.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -44,7 +51,11 @@ defmodule GuedesBank.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:argon2_elixir, "~> 4.0"},
       {:ex_machina, "~> 2.7.0", only: :test},
-      {:tesla, "~> 1.8.0"}
+      {:tesla, "~> 1.8.0"},
+      {:credo, "~> 1.6.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4.3", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.18", only: :test},
+      {:sobelow, "~> 0.8", only: :dev}
     ]
   end
 

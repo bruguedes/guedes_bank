@@ -1,4 +1,6 @@
 defmodule GuedesBank.Users.Get do
+  @moduledoc "Get User domain"
+
   alias GuedesBank.Repo
   alias GuedesBank.Users.Schema.User
 

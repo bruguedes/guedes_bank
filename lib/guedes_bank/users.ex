@@ -1,8 +1,10 @@
 defmodule GuedesBank.Users do
+  @moduledoc "Users domain"
+
   alias GuedesBank.Users.Create
+  alias GuedesBank.Users.Delete
   alias GuedesBank.Users.Get
   alias GuedesBank.Users.Update
-  alias GuedesBank.Users.Delete
 
   defdelegate create_user(params), to: Create, as: :call
   defdelegate get_user(params), to: Get, as: :call

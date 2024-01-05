@@ -1,5 +1,5 @@
 defmodule GuedesBank.Helpers.InputValidation do
-  @doc "  Validate and change input"
+  @moduledoc "  Validate and change input"
 
   alias Ecto.Changeset
 

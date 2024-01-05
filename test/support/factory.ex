@@ -1,4 +1,6 @@
 defmodule GuedesBank.Factory do
+  @moduledoc false
+
   use ExMachina.Ecto, repo: GuedesBank.Repo
 
   alias GuedesBank.Users.Schema.User
