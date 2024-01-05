@@ -1,4 +1,5 @@
 defmodule GuedesBank.Users.Inputs.UpdateUser do
+  @moduledoc "  Update User input"
   use Ecto.Schema
   import Ecto.Changeset
 

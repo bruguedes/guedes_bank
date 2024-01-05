@@ -1,8 +1,8 @@
 defmodule GuedesBankWeb.UsersControllerTest do
   use GuedesBankWeb.ConnCase, async: true
 
-  alias GuedesBank.Users.Schema.User
   alias GuedesBank.Repo
+  alias GuedesBank.Users.Schema.User
 
   @base_url "/api/users"
 

@@ -1,4 +1,6 @@
 defmodule GuedesBank.Users.Update do
+  @moduledoc "Update User domain"
+
   alias GuedesBank.Repo
   alias GuedesBank.Users
   alias GuedesBank.Users.Schema.User

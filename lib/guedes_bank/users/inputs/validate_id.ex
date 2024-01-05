@@ -1,4 +1,6 @@
 defmodule GuedesBank.Users.Inputs.ValidateId do
+  @moduledoc "Validate ID input"
+
   use Ecto.Schema
   import Ecto.Changeset
 

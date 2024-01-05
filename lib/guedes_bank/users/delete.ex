@@ -1,4 +1,6 @@
 defmodule GuedesBank.Users.Delete do
+  @moduledoc " Delete User domain"
+
   alias GuedesBank.Repo
   alias GuedesBank.Users
 
