@@ -7,15 +7,15 @@ on:
 jobs:
 
   lint:
-    uses: ./.github/workflows/lint.yml
+    uses: .github/workflows/lint.yml
     continue-on-error: false
 
   test:
-    uses: ./.github/workflows/test.yml
+    uses: .github/workflows/test.yml
     continue-on-error: false
 
   security:
-    uses: ./.github/workflows/security.yml
+    uses: .github/workflows/security.yml
     continue-on-error: false
 
   merge-check:
