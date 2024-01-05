@@ -3,14 +3,21 @@ name: Verify Lint
 on: pull_request
 
 jobs:
+
   lint:
+
+    continue-on-error: false
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
         elixir: [1.15.4]
         otp: [26]
+
     steps:
+
       - uses: actions/checkout@v2
+
       - uses: erlef/setup-elixir@v1
         with:
           elixir-version: ${{ matrix.elixir }}
@@ -23,5 +30,13 @@ jobs:
       - name: Install Mix Dependencies
         if: steps.mix-cache-lint.outputs.cache-hit != 'true'
         run: mix deps.get
-      - name: ===> Credo Lint
-        run: mix credo -- strict
+
+      - name: Run lint
+        run: mix credo --strict
+        id: credo
+
+      - name: Check Lint Result
+        if: steps.credo.outcome != 'success'
+        run: |
+          echo "Lint errors found!"
+          exit 1

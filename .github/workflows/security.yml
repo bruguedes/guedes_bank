@@ -3,14 +3,20 @@ name: Verify Security
 on: pull_request
 
 jobs:
+
   check_security:
+
+    continue-on-error: false
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
         elixir: [1.15.4]
         otp: [26]
     steps:
+
       - uses: actions/checkout@v2
+
       - uses: erlef/setup-elixir@v1
         with:
           elixir-version: ${{ matrix.elixir }}
@@ -23,5 +29,13 @@ jobs:
       - name: Install Mix Dependencies
         if: steps.mix-cache-security.outputs.cache-hit != 'true'
         run: mix deps.get
-      - name: ===> Security
+
+      - name: Check Security
         run: mix sobelow --config
+        id: sobelow
+
+      - name: Check Security Result
+        if: steps.sobelow.outcome != 'success'
+        run: |
+          echo "Security issues found"
+          exit 1

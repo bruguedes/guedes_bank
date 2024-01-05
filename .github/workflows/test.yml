@@ -1,34 +1,13 @@
-name: Verify Test
+name: Verify Tests
 
 on: pull_request
 
 jobs:
+
   coverall:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        elixir: [1.15.4]
-        otp: [26]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: erlef/setup-elixir@v1
-        with:
-          elixir-version: ${{ matrix.elixir }}
-          otp-version: ${{ matrix.otp }}
-      - uses: actions/cache@v1
-        id: mix-cache-coverage
-        with:
-          path: deps
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-      - name: Install Mix Dependencies
-        if: steps.mix-cache-coverage.outputs.cache-hit != 'true'
-        run: |
-          mix local.rebar --force
-          mix local.hex --force
-          mix deps.get
-          mix ecto.create
-      - name: ===> Verify Coverage and tests
-        run: mix coveralls.html
+
+    continue-on-error: false
+
     services:
       pg:
         image: postgres:13
@@ -40,3 +19,61 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+    env:
+      POSTGRES_HOST: localhost
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: [1.15.4]
+        otp: [26]
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: erlef/setup-elixir@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+
+      - uses: actions/cache@v1
+        id: mix-cache-coverage
+        with:
+          path: deps
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+
+      - name: Install Mix Dependencies
+        if: steps.mix-cache-coverage.outputs.cache-hit != 'true'
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+
+      - name: Wait for DB
+        run: |
+          while ! pg_isready -q -h $POSTGRES_HOST -p 5432; do
+            sleep 1
+          done
+      - name: Run Setup
+        run: mix setup
+
+      - name: Run Tests
+
+        run: mix test
+        id: tests
+
+      - name: Check Tests
+        if: steps.tests.outcome != 'success'
+        run: |
+          echo "Failed due to broken tests"
+          exit 1
+
+      - name: Generate Coverage
+        run: mix coveralls
+        id: coverage
+
+      - name: Check Coverage
+        if: steps.coverage.outcome != 'success'
+        run: |
+          echo "Failed due to low coverage"
+          exit 1

@@ -1,14 +1,23 @@
 name: Verify Dialyzer
+
 on: pull_request
+
 jobs:
+
   dialyzer:
+
+    continue-on-error: false
+
     runs-on: ubuntu-latest
     strategy:
       matrix:
         elixir: [1.15.4]
         otp: [26]
+
     steps:
+
       - uses: actions/checkout@v2
+
       - uses: erlef/setup-elixir@v1
         with:
           elixir-version: ${{ matrix.elixir }}
@@ -21,5 +30,11 @@ jobs:
       - name: Install Mix Dependencies
         if: steps.mix-cache-dialyzer.outputs.cache-hit != 'true'
         run: mix deps.get
-      - name: ===> Dialyzer
+
+      - name: Run Dialyzer
         run: mix dialyzer
+        id: dialyzer
+
+      - name: Check Dialyzer Result
+        if: steps.dialyzer.outcome != 'success'
+        run: exit 1
