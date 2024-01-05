@@ -39,6 +39,11 @@ jobs:
         with:
           path: deps
           key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+      - name: Wait for DB
+        run: |
+          while ! pg_isready -q -h $POSTGRES_HOST -p 5432; do
+            sleep 1
+          done
       - name: Install Mix Dependencies
         if: steps.mix-cache-coverage.outputs.cache-hit != 'true'
         run: |
@@ -46,11 +51,6 @@ jobs:
           mix local.hex --force
           mix deps.get
           mix ecto.create
-      - name: Wait for DB
-        run: |
-          while ! pg_isready -q -h $POSTGRES_HOST -p 5432; do
-            sleep 1
-          done
       - name: Run Tests
         run: mix test
         id: tests
