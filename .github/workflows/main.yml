@@ -1,0 +1,50 @@
+
+name: CI
+on:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - reopened
+      - ready_for_review
+
+jobs:
+  continuous-integration:
+    name: CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Include dialyzer Steps
+        uses: .github/workflows/dialyxir.yml
+
+      - name: Include dialyzer Steps
+        uses: .github/workflows/format.yml
+
+      - name: Include lint Steps
+        uses: .github/workflows/lint.yml
+
+      - name: Include security Steps
+        uses: .github/workflows/security.yml
+
+      - name: Include test Steps
+        uses: .github/workflows/test.yml
+
+  merge-check:
+    name: Merge Check
+    runs-on: ubuntu-latest
+
+    needs: continuous-integration
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge Check
+        run: |
+          if [ ${{ needs.build-test-deploy.result }} != 'success' ]; then
+            echo "Continuous Integration Failed"
+            exit 1
+          fi
