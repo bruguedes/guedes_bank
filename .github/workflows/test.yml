@@ -30,28 +30,35 @@ jobs:
         otp: [26]
     steps:
       - uses: actions/checkout@v2
+
       - uses: erlef/setup-elixir@v1
         with:
           elixir-version: ${{ matrix.elixir }}
           otp-version: ${{ matrix.otp }}
+
       - uses: actions/cache@v1
         id: mix-cache-coverage
         with:
           path: deps
           key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-      - name: Wait for DB
-        run: |
-          while ! pg_isready -q -h $POSTGRES_HOST -p 5432; do
-            sleep 1
-          done
+
       - name: Install Mix Dependencies
         if: steps.mix-cache-coverage.outputs.cache-hit != 'true'
         run: |
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
-          mix ecto.create
+
+      - name: Wait for DB
+        run: |
+          while ! pg_isready -q -h $POSTGRES_HOST -p 5432; do
+            sleep 1
+          done
+      - name: Run Setup
+        run: mix setup
+
       - name: Run Tests
+
         run: mix test
         id: tests
 
