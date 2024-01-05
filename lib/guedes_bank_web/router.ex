@@ -8,8 +8,6 @@ defmodule GuedesBankWeb.Router do
   scope "/api", GuedesBankWeb do
     pipe_through :api
 
-    get "/", WelcomeController, :index
-
     resources "/users", UsersController, only: [:create, :show, :update, :delete]
   end
 
