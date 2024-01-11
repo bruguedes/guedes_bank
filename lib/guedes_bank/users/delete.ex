@@ -4,6 +4,7 @@ defmodule GuedesBank.Users.Delete do
   alias GuedesBank.Repo
   alias GuedesBank.Users
 
+  @spec call(binary()) :: {:ok, Users.User.t()} | {:error, atom()}
   def call(id) when is_binary(id) do
     id
     |> Users.get_user()
