@@ -1,14 +1,17 @@
-defmodule GuedesBank.ExternalClient.ViaVep do
+defmodule GuedesBank.ExternalClient.ViaCep do
   @moduledoc "ViaCep client"
 
   use Tesla
+  alias GuedesBank.ExternalClient.ViaCepBehaviour
 
-  plug Tesla.Middleware.BaseUrl, "https://viacep.com.br/ws/"
   plug Tesla.Middleware.JSON
 
-  @status_errors [{500, :internal_server_error}, {400, :bad_resquest}]
-  def call(cep) do
-    "#{cep}/json"
+  @defautl_url "https://viacep.com.br/ws"
+  @behaviour ViaCepBehaviour
+
+  @impl true
+  def call(url \\ @defautl_url, cep) do
+    "#{url}/#{cep}/json"
     |> get()
     |> handle_response()
   end

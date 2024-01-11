@@ -1,10 +1,15 @@
 defmodule GuedesBankWeb.UsersControllerTest do
   use GuedesBankWeb.ConnCase, async: true
 
+  import Mox
+
+  alias GuedesBank.ExternalClient.ViaCepMock
   alias GuedesBank.Repo
   alias GuedesBank.Users.Schema.User
 
   @base_url "/api/users"
+
+  setup :verify_on_exit!
 
   describe "create/2" do
     setup do
@@ -20,6 +25,10 @@ defmodule GuedesBankWeb.UsersControllerTest do
     end
 
     test "successfully creates an user when data is valid", ctx do
+      expect(ViaCepMock, :call, fn _cep ->
+        {:ok, %{}}
+      end)
+
       assert %{
                "data" => %{
                  "cep" => "69905080",
@@ -62,6 +71,10 @@ defmodule GuedesBankWeb.UsersControllerTest do
       |> Repo.insert()
 
       params = Map.put(ctx.params, "name", "Joe Doe")
+
+      expect(ViaCepMock, :call, fn _cep ->
+        {:ok, %{}}
+      end)
 
       assert %{
                "errors" => %{

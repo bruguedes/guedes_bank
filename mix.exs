@@ -55,7 +55,9 @@ defmodule GuedesBank.MixProject do
       {:credo, "~> 1.6.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4.3", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
-      {:sobelow, "~> 0.8", only: :dev}
+      {:sobelow, "~> 0.8", only: :dev},
+      {:bypass, "~> 2.1", only: :test},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 
