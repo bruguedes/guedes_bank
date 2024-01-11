@@ -6,7 +6,7 @@ defmodule GuedesBank.Users.Create do
   alias GuedesBank.Users.Inputs.CreateUser
   alias GuedesBank.Users.Schema.User
 
-  @spec call(CreateUser.t()) :: {:ok, User.t()} | {:errsor, atom() | Ecto.Changeset.t()}
+  @spec call(map()) :: {:ok, map()} | {:errsor, atom() | Ecto.Changeset.t()}
   def call(%CreateUser{cep: cep} = params) do
     cep
     |> client().call()
