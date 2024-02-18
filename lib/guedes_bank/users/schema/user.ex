@@ -3,6 +3,10 @@ defmodule GuedesBank.Users.Schema.User do
 
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
+
+  alias GuedesBank.Accounts.Schema.Account
+  alias GuedesBank.Repo
 
   @required ~w(name password email cep)a
 
@@ -12,6 +16,8 @@ defmodule GuedesBank.Users.Schema.User do
     field :cep, :string
     field :password_hash, :string
     field :password, :string, virtual: true
+
+    has_one :account, Account
 
     timestamps()
   end
@@ -38,4 +44,9 @@ defmodule GuedesBank.Users.Schema.User do
   end
 
   defp add_hash_password(changeset), do: changeset
+
+  def exists?(user_id) do
+    query = from u in __MODULE__, where: u.id == ^user_id
+    Repo.exists?(query)
+  end
 end

@@ -8,7 +8,13 @@ defmodule GuedesBankWeb.Router do
   scope "/api", GuedesBankWeb do
     pipe_through :api
 
-    resources "/users", UsersController, only: [:create, :show, :update, :delete]
+    scope "users" do
+      resources "/", UsersController, only: [:create, :show, :update, :delete]
+    end
+
+    scope "accounts" do
+      post "/", AccountsController, :create
+    end
   end
 
   # Enable LiveDashboard in development
