@@ -48,26 +48,5 @@ defmodule GuedesBankWeb.AccountsControllerTest do
                |> post(@base_url, params)
                |> json_response(:not_found)
     end
-
-    # test "returns an error when exists an user with the same email", ctx do
-    #   ctx.params
-    #   |> User.changeset()
-    #   |> Repo.insert()
-
-    #   params = Map.put(ctx.params, "name", "Joe Doe")
-
-    #   expect(ViaCepMock, :call, fn _cep ->
-    #     {:ok, %{}}
-    #   end)
-
-    #   assert %{
-    #            "errors" => %{
-    #              "email" => ["has already been taken"]
-    #            }
-    #          } ==
-    #            ctx.conn
-    #            |> post(@base_url, params)
-    #            |> json_response(:bad_request)
-    # end
   end
 end
