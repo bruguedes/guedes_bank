@@ -7,7 +7,7 @@ defmodule GuedesBank.Users.Update do
 
   def call(%{id: id} = params) do
     id
-    |> Users.get_user()
+    |> Users.get()
     |> case do
       {:ok, user} -> update_user(user, params)
       {:error, _} -> {:error, :user_not_found}
