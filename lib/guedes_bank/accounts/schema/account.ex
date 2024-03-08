@@ -3,9 +3,8 @@ defmodule GuedesBank.Accounts.Schema.Account do
 
   use Ecto.Schema
   import Ecto.Changeset
-  import Ecto.Query
+  import GuedesBank.Helpers.Query
 
-  alias GuedesBank.Repo
   alias GuedesBank.Users.Schema.User
 
   @required ~w(balance user_id)a
@@ -18,13 +17,18 @@ defmodule GuedesBank.Accounts.Schema.Account do
     timestamps()
   end
 
+  def changeset_create(params) do
+    %__MODULE__{}
+    |> changeset(params)
+    |> generate_account_number()
+  end
+
   def changeset(account \\ %__MODULE__{}, params) do
     account
     |> cast(params, @required)
     |> validate_required(@required)
     |> unique_constraint(:user_id, name: :unique_accounts_user)
     |> check_constraint(:balance, name: :balance_must_be_positive)
-    |> generate_account_number()
   end
 
   defp generate_account_number(%{valid?: true} = changeset) do
@@ -41,12 +45,14 @@ defmodule GuedesBank.Accounts.Schema.Account do
       |> Enum.random()
       |> to_string
 
-    query = from a0 in __MODULE__, where: a0.account_number == ^account_number
-
-    if Repo.exists?(query) do
+    if account_exists?(account_number: account_number) do
       generate_account_number()
     else
       account_number
     end
   end
+
+  def account_exists?(filters), do: exists?(__MODULE__, filters)
+  def get_account(filters), do: get(__MODULE__, filters, "account")
+  def get_by_account(filters), do: get_by(__MODULE__, filters, "account")
 end
