@@ -3,10 +3,9 @@ defmodule GuedesBank.Users.Schema.User do
 
   use Ecto.Schema
   import Ecto.Changeset
-  import Ecto.Query
+  import GuedesBank.Helpers.Query
 
   alias GuedesBank.Accounts.Schema.Account
-  alias GuedesBank.Repo
 
   @required ~w(name password email cep)a
 
@@ -45,8 +44,7 @@ defmodule GuedesBank.Users.Schema.User do
 
   defp add_hash_password(changeset), do: changeset
 
-  def exists?(user_id) do
-    query = from u in __MODULE__, where: u.id == ^user_id
-    Repo.exists?(query)
-  end
+  def user_exists?(filters), do: exists?(__MODULE__, filters)
+  def get_user(filters), do: get(__MODULE__, filters, "user")
+  def get_by_user(filters), do: get_by(__MODULE__, filters, "user")
 end

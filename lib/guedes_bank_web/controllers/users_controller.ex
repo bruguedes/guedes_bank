@@ -20,7 +20,7 @@ defmodule GuedesBankWeb.UsersController do
 
   def show(conn, params) do
     with {:ok, %{id: id}} <- InputValidation.validate_and_change(ValidateId, params),
-         {:ok, user} <- Users.get_user(id) do
+         {:ok, user} <- Users.get(id) do
       conn
       |> put_status(:ok)
       |> render(:get_user, user: user)
