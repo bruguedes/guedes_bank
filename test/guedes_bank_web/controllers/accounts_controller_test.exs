@@ -96,7 +96,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
         "operation_type" => "transference",
         "to_account" => account_number,
         "form_account" => account_number,
-        "value" => 100
+        "value" => "100"
       }
 
       assert %{
