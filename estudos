@@ -1,0 +1,19 @@
+# Multi.new()
+    # |> Multi.run(:to_account, fn _, _ -> Accounts.get_by(account_number: to_account_number) end)
+    # |> Multi.run(:form_account, fn _, _ ->
+    #   Accounts.get_by(account_number: form_account_number)
+    # end)
+    # |> Multi.run(:withdraw, fn _, %{to_account: to_account} ->
+    #   operation(:withdraw, to_account, value)
+    # end)
+    # |> Multi.run(:deposit, fn _, %{form_account: form_account} ->
+    #   operation(:deposit, form_account, value)
+    # end)
+    # |> Repo.transaction()
+    # |> case do
+    #   {:ok, result} -> {:ok, build_result(result, value)}
+
+    #   {:error, step, reason, _changes} ->
+    #     {:error, reason, step}
+
+    # end

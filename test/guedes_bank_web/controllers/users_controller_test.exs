@@ -66,11 +66,9 @@ defmodule GuedesBankWeb.UsersControllerTest do
     end
 
     test "returns an error when exists an user with the same email", ctx do
-      ctx.params
-      |> User.changeset()
-      |> Repo.insert()
+      %{email: email} = insert(:user, email: "bruno@guedes.com")
 
-      params = Map.put(ctx.params, "name", "Joe Doe")
+      params = Map.put(ctx.params, "email", email)
 
       expect(ViaCepMock, :call, fn _cep ->
         {:ok, %{}}

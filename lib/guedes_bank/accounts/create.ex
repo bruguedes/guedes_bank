@@ -10,8 +10,8 @@ defmodule GuedesBank.Accounts.Create do
   def call(%CreateAccount{user_id: user_id} = params) do
     input = Map.from_struct(params)
 
-    with true <- Users.exists?(user_id),
-         %{valid?: true} = account_struct <- Account.changeset(input),
+    with true <- Users.exists?(id: user_id),
+         %{valid?: true} = account_struct <- Account.changeset_create(input),
          {:ok, _} = result <- Repo.insert(account_struct) do
       result
     else

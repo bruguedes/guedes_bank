@@ -14,6 +14,7 @@ defmodule GuedesBankWeb.Router do
 
     scope "accounts" do
       post "/", AccountsController, :create
+      post "/transaction", AccountsController, :transaction
     end
   end
 
