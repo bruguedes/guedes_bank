@@ -38,6 +38,43 @@ defmodule GuedesBankWeb.AccountsControllerTest do
                |> json_response(:bad_request)
     end
 
+    test "returns an error when balance is less than 0", ctx do
+      %{id: user_id} = insert(:user)
+      params = %{"user_id" => "#{user_id}", "balance" => "-10"}
+
+      assert %{"errors" => %{"balance" => ["is invalid"]}} =
+               ctx.conn
+               |> post(@base_url, params)
+               |> json_response(:bad_request)
+    end
+
+    test "returns an error when user_id is nil", ctx do
+      params = %{"user_id" => nil, "balance" => 100}
+
+      assert %{"errors" => %{"user_id" => ["can't be blank"]}} ==
+               ctx.conn
+               |> post(@base_url, params)
+               |> json_response(:bad_request)
+    end
+
+    test "returns an error when user_id or balance is string empty", ctx do
+      params = %{"user_id" => "", "balance" => ""}
+
+      assert %{"errors" => %{"balance" => ["can't be blank"], "user_id" => ["can't be blank"]}} ==
+               ctx.conn
+               |> post(@base_url, params)
+               |> json_response(:bad_request)
+    end
+
+    test "returns an error when balance is nil", ctx do
+      params = %{"user_id" => "#{Enum.random(1..1000)}", "balance" => nil}
+
+      %{"errors" => %{"balance" => ["can't be blank"]}} ==
+        ctx.conn
+        |> post(@base_url, params)
+        |> json_response(:bad_request)
+    end
+
     test "returns an error when user not found", ctx do
       invalid_user = Enum.random(1..1000)
 
@@ -47,6 +84,33 @@ defmodule GuedesBankWeb.AccountsControllerTest do
                ctx.conn
                |> post(@base_url, params)
                |> json_response(:not_found)
+    end
+  end
+
+  describe "transaction/2" do
+    test "successfully transacts an account when data is valid", ctx do
+      %{id: user_id} = insert(:user)
+      %{account_number: account_number} = insert(:account, user_id: user_id)
+
+      params = %{
+        "to_account" => account_number,
+        "form_account" => account_number,
+        "value" => 100
+      }
+
+      assert %{
+               "data" => %{
+                 "transaction_type" => "transference",
+                 "status" => "success",
+                 "to_account" => ^account_number,
+                 "form_account" => ^account_number,
+                 "value" => "100",
+                 "date" => _
+               }
+             } =
+               ctx.conn
+               |> post("#{@base_url}/transaction", params)
+               |> json_response(:ok)
     end
   end
 end
