@@ -7,7 +7,6 @@ defmodule GuedesBank.Accounts.Transaction do
   alias GuedesBank.Accounts.Schema.Account
   alias GuedesBank.Repo
 
-
   def call(%{
         operation_type: :transference,
         to_account: to_account_number,

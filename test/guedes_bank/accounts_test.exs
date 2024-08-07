@@ -120,7 +120,11 @@ defmodule GuedesBank.AccountsTest do
       assert {
                :error,
                %{
-                errors: [balance: {"is invalid", [constraint: :check, constraint_name: "balance_must_be_positive"]}]
+                 errors: [
+                   balance:
+                     {"is invalid",
+                      [constraint: :check, constraint_name: "balance_must_be_positive"]}
+                 ]
                }
              } = Accounts.transaction(params)
     end
@@ -154,7 +158,6 @@ defmodule GuedesBank.AccountsTest do
     end
 
     test "fail, when from_account not found" do
-
       %{account_number: to_account_number} = insert(:account)
 
       params = %{
@@ -168,7 +171,6 @@ defmodule GuedesBank.AccountsTest do
     end
 
     test "fail, when to_account not found" do
-
       %{account_number: from_account_number} = insert(:account, balance: Decimal.new("100"))
 
       params = %{
