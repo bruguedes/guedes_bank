@@ -69,7 +69,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
     test "returns an error when balance is nil", ctx do
       params = %{"user_id" => "#{Enum.random(1..1000)}", "balance" => nil}
 
-      %{"errors" => %{"balance" => ["can't be blank"]}} ==
+      %{"errors" => %{"balance" => ["can't be blank"]}} =
         ctx.conn
         |> post(@base_url, params)
         |> json_response(:bad_request)
@@ -93,6 +93,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
       %{account_number: account_number} = insert(:account, user_id: user_id)
 
       params = %{
+        "operation_type" => "transference",
         "to_account" => account_number,
         "form_account" => account_number,
         "value" => 100
