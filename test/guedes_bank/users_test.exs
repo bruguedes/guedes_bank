@@ -4,9 +4,9 @@ defmodule GuedesBank.UsersTest do
 
   alias GuedesBank.ExternalClient.ViaCepMock
   alias GuedesBank.Users
-  alias GuedesBank.Users.Schema.User
   alias GuedesBank.Users.Inputs.CreateUser
   alias GuedesBank.Users.Inputs.UpdateUser
+  alias GuedesBank.Users.Schema.User
 
   describe "create_user" do
     test "successfully create user" do
