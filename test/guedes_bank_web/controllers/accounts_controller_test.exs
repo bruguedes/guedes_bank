@@ -90,7 +90,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
   describe "transaction/2" do
     test "successfully transacts an account when data is valid", ctx do
       %{id: user_id} = insert(:user)
-      %{account_number: account_number} = insert(:account, user_id: user_id)
+      %{account_number: account_number} = insert(:account, user_id: user_id, balance: 100)
 
       params = %{
         "operation_type" => "transference",
