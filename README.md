@@ -12,6 +12,7 @@ GuedesBank is a banking application developed with the Phoenix framework. The go
   - `querys.ex`
   - `delete.ex`
   - `update.ex`
+  - `auth.ex`
 - Refactor to support account deposits and withdrawals via transfer
 - Implement deposit and withdrawal transactions
 - Retrieve account balance

@@ -6,6 +6,8 @@ defmodule GuedesBankWeb.UsersController do
   alias GuedesBank.Users.Inputs.CreateUser
   alias GuedesBank.Users.Inputs.UpdateUser
   alias GuedesBank.Users.Inputs.ValidateId
+  alias GuedesBankWeb.Auth.PasswordVerify
+  alias GuedesBankWeb.Auth.Token
 
   action_fallback GuedesBankWeb.FallbackController
 
@@ -43,5 +45,20 @@ defmodule GuedesBankWeb.UsersController do
       |> put_status(:ok)
       |> render(:delete_user, user: user)
     end
+  end
+
+  def authenticate(conn, %{"user_id" => _, "password" => _} = params) do
+    with {:ok, :valid_password} <- PasswordVerify.call(params),
+         token <- Token.sign(params["user_id"]) do
+      conn
+      |> put_status(:ok)
+      |> render(:token, %{token: token})
+    end
+  end
+
+  def authenticate(conn, _params) do
+    conn
+    |> put_status(:bad_request)
+    |> render(:error, %{error: "invalid parameters"})
   end
 end
