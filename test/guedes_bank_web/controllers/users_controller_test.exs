@@ -99,6 +99,7 @@ defmodule GuedesBankWeb.UsersControllerTest do
                }
              } =
                ctx.conn
+               |> conn_with_token()
                |> get("#{@base_url}/#{user_id}")
                |> json_response(:ok)
 
@@ -109,6 +110,7 @@ defmodule GuedesBankWeb.UsersControllerTest do
     test "returns an error when id is invalid", ctx do
       assert %{"error" => "User not found"} =
                ctx.conn
+               |> conn_with_token()
                |> get("#{@base_url}/0")
                |> json_response(:not_found)
     end
@@ -132,6 +134,7 @@ defmodule GuedesBankWeb.UsersControllerTest do
                }
              } =
                ctx.conn
+               |> conn_with_token()
                |> put("#{@base_url}/#{user_id}", params)
                |> json_response(:ok)
     end
@@ -139,6 +142,7 @@ defmodule GuedesBankWeb.UsersControllerTest do
     test "returns an error when id is invalid", ctx do
       assert %{"error" => "User not found"} =
                ctx.conn
+               |> conn_with_token()
                |> put("#{@base_url}/0", %{})
                |> json_response(:not_found)
     end
@@ -151,6 +155,7 @@ defmodule GuedesBankWeb.UsersControllerTest do
 
       assert %{"errors" => %{"email" => ["has already been taken"]}} =
                ctx.conn
+               |> conn_with_token()
                |> put("#{@base_url}/#{user_id}", params)
                |> json_response(:bad_request)
     end
@@ -162,6 +167,7 @@ defmodule GuedesBankWeb.UsersControllerTest do
 
       assert %{"data" => %{"cep" => _, "email" => _, "id" => ^user_id, "name" => _}} =
                ctx.conn
+               |> conn_with_token()
                |> delete("#{@base_url}/#{user_id}")
                |> json_response(:ok)
 
@@ -171,6 +177,7 @@ defmodule GuedesBankWeb.UsersControllerTest do
     test "returns an error when id is invalid", ctx do
       assert %{"error" => "User not found"} =
                ctx.conn
+               |> conn_with_token()
                |> delete("#{@base_url}/0")
                |> json_response(:not_found)
     end

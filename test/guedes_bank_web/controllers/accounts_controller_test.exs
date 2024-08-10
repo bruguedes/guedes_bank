@@ -18,6 +18,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
                }
              } =
                ctx.conn
+               |> conn_with_token()
                |> post(@base_url, params)
                |> json_response(:created)
     end
@@ -25,6 +26,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
     test "returns an error when required params not sent", ctx do
       assert %{"errors" => %{"user_id" => ["can't be blank"], "balance" => ["can't be blank"]}} =
                ctx.conn
+               |> conn_with_token()
                |> post(@base_url, %{})
                |> json_response(:bad_request)
     end
@@ -34,6 +36,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
 
       assert %{"errors" => %{"balance" => ["is invalid"]}} =
                ctx.conn
+               |> conn_with_token()
                |> post(@base_url, params)
                |> json_response(:bad_request)
     end
@@ -44,6 +47,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
 
       assert %{"errors" => %{"balance" => ["is invalid"]}} =
                ctx.conn
+               |> conn_with_token()
                |> post(@base_url, params)
                |> json_response(:bad_request)
     end
@@ -53,6 +57,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
 
       assert %{"errors" => %{"user_id" => ["can't be blank"]}} ==
                ctx.conn
+               |> conn_with_token()
                |> post(@base_url, params)
                |> json_response(:bad_request)
     end
@@ -62,6 +67,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
 
       assert %{"errors" => %{"balance" => ["can't be blank"], "user_id" => ["can't be blank"]}} ==
                ctx.conn
+               |> conn_with_token()
                |> post(@base_url, params)
                |> json_response(:bad_request)
     end
@@ -71,6 +77,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
 
       %{"errors" => %{"balance" => ["can't be blank"]}} =
         ctx.conn
+        |> conn_with_token()
         |> post(@base_url, params)
         |> json_response(:bad_request)
     end
@@ -82,6 +89,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
 
       assert %{"error" => "User not found"} =
                ctx.conn
+               |> conn_with_token()
                |> post(@base_url, params)
                |> json_response(:not_found)
     end
@@ -110,6 +118,7 @@ defmodule GuedesBankWeb.AccountsControllerTest do
                }
              } =
                ctx.conn
+               |> conn_with_token()
                |> post("#{@base_url}/transaction", params)
                |> json_response(:ok)
     end
