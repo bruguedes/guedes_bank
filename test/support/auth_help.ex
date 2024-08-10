@@ -8,6 +8,6 @@ defmodule GuedesBank.AuthHelper do
 
   def conn_with_token(conn) do
     user = GuedesBank.Factory.build(:user)
-     put_req_header(conn, "authorization", "Bearer #{Token.sign(user.id)}")
+    put_req_header(conn, "authorization", "Bearer #{Token.sign(user.id)}")
   end
 end
