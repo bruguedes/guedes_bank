@@ -5,14 +5,27 @@ defmodule GuedesBankWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug GuedesBankWeb.Plugs.Auth
+  end
+
   scope "/api", GuedesBankWeb do
     pipe_through :api
 
-    scope "users" do
-      resources "/", UsersController, only: [:create, :show, :update, :delete]
+    scope "/users" do
+      resources "/", UsersController, only: [:create]
+      post "/authenticate", UsersController, :authenticate
+    end
+  end
+
+  scope "/api", GuedesBankWeb do
+    pipe_through [:api, :auth]
+
+    scope "/users" do
+      resources "/", UsersController, only: [:show, :update, :delete]
     end
 
-    scope "accounts" do
+    scope "/accounts" do
       post "/", AccountsController, :create
       post "/transaction", AccountsController, :transaction
     end

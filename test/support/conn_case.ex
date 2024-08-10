@@ -29,6 +29,7 @@ defmodule GuedesBankWeb.ConnCase do
       import Phoenix.ConnTest
       import GuedesBankWeb.ConnCase
       import GuedesBank.Factory
+      import GuedesBank.AuthHelper
     end
   end
 

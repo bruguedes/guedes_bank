@@ -5,7 +5,9 @@ defmodule GuedesBankWeb.FallbackController do
     {:invalid_cep, :bad_request, "invalid CEP"},
     {:user_not_found, :not_found, "User not found"},
     {:account_not_found, :not_found, "Account not found"},
-    {:balance_must_be_positive, :unprocessable_entity, "balance must be positive"}
+    {:balance_must_be_positive, :unprocessable_entity, "balance must be positive"},
+    {:unauthorized, :unauthorized, "Unauthorized"},
+    {:invalid_parameters, :bad_request, "invalid parameters"}
   ]
 
   def call(conn, {:error, %Ecto.Changeset{valid?: false} = changeset}) do

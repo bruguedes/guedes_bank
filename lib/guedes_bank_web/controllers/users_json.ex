@@ -19,4 +19,6 @@ defmodule GuedesBankWeb.UsersJSON do
       cep: user.cep
     }
   end
+
+  def token(%{token: token}), do: %{data: %{bearer: token}}
 end
